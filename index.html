@@ -519,7 +519,8 @@ async function loadFromSheet() {
   // Siempre intenta cargar desde Google Sheets
   setLoadingState(true);
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const PROXY = "https://corsproxy.io/?";
+    const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
     const text = await res.text();
     const rows = text.trim().split('\n').slice(1); // saltar encabezado
     const parsed = rows.map(row => {
