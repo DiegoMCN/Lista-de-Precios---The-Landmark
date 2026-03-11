@@ -508,7 +508,7 @@
 // ══════════════════════════════════════════════
 // 🔗 CONFIGURACIÓN — Solo cambia esta URL
 // ══════════════════════════════════════════════
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhqFGM0cIvzv8E90ePP9d6wLr9E-0YSIWjyXV49hDM5eBXX2Ed_Px6QEOi9Ci0Q/pub?gid=693428247&single=true&output=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhqFGM0cIvzv8E90ePP9d6wLr9E-0YSIWjyXV49hDM5eBXX2Ed_Px6QEOi9Ci0Q/pub?gid=285302680&single=true&output=csv";
 const REFRESH_MINUTES = 5;           // cada cuántos minutos se actualiza
 // ══════════════════════════════════════════════
 
@@ -521,7 +521,7 @@ async function loadFromSheet() {
     const PROXY = "https://corsproxy.io/?";
     const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
     const text = await res.text();
-    const rows = text.trim().split('\n').slice(1); // saltar encabezado
+    const rows = text.trim().split('\n').slice(3); // saltar 3 filas: título, subtítulo, encabezados
     const parsed = rows.map(row => {
       // Parse CSV row respecting quoted fields (e.g. "$6,462,420.00")
       const cols = [];
