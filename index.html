@@ -518,8 +518,7 @@ let refreshTimer = null;
 async function loadFromSheet() {
   setLoadingState(true);
   try {
-    const PROXY = "https://api.allorigins.win/raw?url=";
-    const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
+    const res = await fetch(SHEET_CSV_URL);
     const text = await res.text();
     const rows = text.trim().split('\n').slice(3); // saltar 3 filas: título, subtítulo, encabezados
     const parsed = rows.map(row => {
@@ -550,6 +549,10 @@ async function loadFromSheet() {
     updateTimestamp();
     render();
   } catch(e) {
+    console.error("Sheet error:", e);
+    // Fallback: usar datos locales
+    filtered = [...RAW];
+    render();
     showSheetError();
   }
   setLoadingState(false);
