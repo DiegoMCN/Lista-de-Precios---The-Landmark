@@ -508,7 +508,7 @@
 // ══════════════════════════════════════════════
 // 🔗 CONFIGURACIÓN — Solo cambia esta URL
 // ══════════════════════════════════════════════
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhqFGM0cIvzv8E90ePP9d6wLr9E-0YSIWjyXV49hDM5eBXX2Ed_Px6QEOi9Ci0Q/pub?gid=285302680&single=true&output=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5WQdJCicP6AvsfKeCfWhzMBTOcu9mqx4qbfI3eZN_yohU4sV5tDz5bCUk3i_fJlCL3XUflJkOrnT-/pub?gid=903192593&single=true&output=csv";
 const REFRESH_MINUTES = 5;           // cada cuántos minutos se actualiza
 // ══════════════════════════════════════════════
 
@@ -518,28 +518,20 @@ let refreshTimer = null;
 async function loadFromSheet() {
   setLoadingState(true);
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const PROXY = "https://api.allorigins.win/raw?url=";
+    const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
     const text = await res.text();
-    const rows = text.trim().split('\n').slice(3); // saltar 3 filas: título, subtítulo, encabezados
+    const rows = text.trim().split('\n').slice(1); // saltar 1 fila de encabezado
     const parsed = rows.map(row => {
-      // Parse CSV row respecting quoted fields (e.g. "$6,462,420.00")
-      const cols = [];
-      let cur = '', inQ = false;
-      for (let i = 0; i < row.length; i++) {
-        if (row[i] === '"') { inQ = !inQ; }
-        else if (row[i] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-        else { cur += row[i]; }
-      }
-      cols.push(cur.trim());
-      const toNum = v => parseFloat((v||'0').replace(/[$,]/g,'')) || 0;
+      const cols = row.split(',').map(c => c.trim());
       return {
         n: cols[0], piso: cols[1], status: (cols[2]||'').toUpperCase(),
         ubi: cols[3], tipo: cols[4],
-        m2i: toNum(cols[5]),
-        terr: toNum(cols[6]),
-        total: toNum(cols[7]),
-        p1: toNum(cols[8]),
-        p2: toNum(cols[9]),
+        m2i: parseFloat(cols[5]) || 0,
+        terr: parseFloat(cols[6]) || 0,
+        total: parseFloat(cols[7]) || 0,
+        p1: parseFloat(cols[8]) || 0,
+        p2: parseFloat(cols[9]) || 0,
       };
     }).filter(u => u.n);
     RAW.length = 0;
