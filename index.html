@@ -518,8 +518,7 @@ let refreshTimer = null;
 async function loadFromSheet() {
   setLoadingState(true);
   try {
-    const PROXY = "https://api.allorigins.win/raw?url=";
-    const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
+    const res = await fetch(SHEET_CSV_URL, {mode: "cors"});
     const text = await res.text();
     const rows = text.trim().split('\n').slice(1); // saltar 1 fila de encabezado
     const parsed = rows.map(row => {
