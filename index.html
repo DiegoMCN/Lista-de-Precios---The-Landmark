@@ -518,7 +518,7 @@ let refreshTimer = null;
 async function loadFromSheet() {
   setLoadingState(true);
   try {
-    const PROXY = "https://corsproxy.io/?";
+    const PROXY = "https://api.allorigins.win/raw?url=";
     const res = await fetch(PROXY + encodeURIComponent(SHEET_CSV_URL));
     const text = await res.text();
     const rows = text.trim().split('\n').slice(3); // saltar 3 filas: título, subtítulo, encabezados
