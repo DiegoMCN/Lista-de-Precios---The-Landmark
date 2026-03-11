@@ -508,7 +508,7 @@
 // ══════════════════════════════════════════════
 // 🔗 CONFIGURACIÓN — Solo cambia esta URL
 // ══════════════════════════════════════════════
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhqFGM0cIvzv8E90ePP9d6wLr9E-0YSIWjyXV49hDM5eBXX2Ed_Px6QEOi9Ci0Q/pub?gid=285302680&single=true&output=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhqFGM0cIvzv8E90ePP9d6wLr9E-0YSIWjyXV49hDM5eBXX2Ed_Px6QEOi9Ci0Q/pub?gid=693428247&single=true&output=csv"; // Sin conexión a Google Sheets
 const REFRESH_MINUTES = 5;           // cada cuántos minutos se actualiza
 // ══════════════════════════════════════════════
 
@@ -516,7 +516,11 @@ let lastUpdate = null;
 let refreshTimer = null;
 
 async function loadFromSheet() {
-  // Siempre intenta cargar desde Google Sheets
+  if (!SHEET_CSV_URL) {
+    filtered = [...RAW];
+    render();
+    return;
+  }
   setLoadingState(true);
   try {
     const PROXY = "https://corsproxy.io/?";
